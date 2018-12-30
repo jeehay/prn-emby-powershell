@@ -1,6 +1,7 @@
 ﻿#Config file locations
 #cls
-$loc= $env:OneDrive+"\Powershell\New Way"
+
+if(-not $loc){$global:loc= $env:OneDrive+"\Powershell\New Way"}
 
 $global:StudioName               = "$loc\StudioName.xml"
 $global:StudioMainCategory       = "$loc\StudioMainCategory.xml"
@@ -54,6 +55,9 @@ function Set-ConfigItem
 {
     param($Key, $Value, $Scope)
     
+    $Key=$Key.Trim()
+    $Value=$Value.trim()
+
     if(-not $Scope -or -not $Key)
     {
         throw 'Scope and key parameters must be provided'
@@ -76,6 +80,9 @@ function Check-Set-ConfigItem
 {
     param($Key, $Value, $Scope)
     
+    $Key=$Key.Trim()
+    $Value=$Value.trim()
+
     if(-not $Scope -or -not $Key)
     {
         throw 'Scope and key parameters must be provided'
@@ -101,6 +108,8 @@ function Get-ConfigItem
 {
     param($Key, $Scope)
 
+    $Key=$Key.Trim()
+    
     if(-not $Scope -or -not $Key)
     {
         throw 'Scope and key parameters must be provided'
@@ -148,7 +157,6 @@ function Get-Config
 
 function Write-Config
 {
-    
     $config['StudioName']             | Export-Clixml -Path $StudioName
     $config['StudioMainCategory']     | Export-Clixml -Path $StudioMainCategory
     $config['Category']               | Export-Clixml -Path $Category
@@ -156,6 +164,6 @@ function Write-Config
     $config['StarsAlias']             | Export-Clixml -Path $StarsAlias
 }
 
-Export-ModuleMember -Function Set-ConfigItem,Get-ConfigItem,Remove-ConfigItem,Get-Config
+#Export-ModuleMember -Function Set-ConfigItem,Get-ConfigItem,Remove-ConfigItem,Get-Config
 #,Read-Config
 
